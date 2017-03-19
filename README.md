@@ -19,7 +19,7 @@ dependencies {
 }
 ```
 
-\Maven:
+Maven:
 ```
 <dependency>
   <groupId>com.github.flepsik</groupId>
