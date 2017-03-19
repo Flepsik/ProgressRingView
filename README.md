@@ -1,6 +1,5 @@
 # ProgressRingView
 
-![alt tag](https://pp.userapi.com/c637425/v637425086/3e9a0/SE6XfTxq5Q4.jpg)
 
 ## Installation
 
