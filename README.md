@@ -7,7 +7,7 @@
 ```
 repositories {
     maven {
-        url 'https://dl.bintray.com/nuuneoi/maven/'
+        url 'https://dl.bintray.com/fleps/maven/'
     }
 }
 
