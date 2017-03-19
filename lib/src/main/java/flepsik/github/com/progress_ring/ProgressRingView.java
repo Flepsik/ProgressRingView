@@ -128,28 +128,6 @@ public class ProgressRingView extends View {
         return ringWidth;
     }
 
-    @Override
-    protected Parcelable onSaveInstanceState() {
-        Parcelable superState = super.onSaveInstanceState();
-        SavedState savedState = new SavedState(superState);
-        savedState.animationDuration = animationDuration;
-        savedState.animated = animated;
-        savedState.progress = progress;
-        savedState.ringWidth = ringWidth;
-        return savedState;
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Parcelable state) {
-        super.onRestoreInstanceState(state);
-        SavedState savedState = (SavedState) state;
-        super.onRestoreInstanceState(savedState.getSuperState());
-        animationDuration = savedState.animationDuration;
-        animated = savedState.animated;
-        setProgress(savedState.progress);
-        setRingWidth(savedState.ringWidth);
-    }
-
     protected void initialize(Context context, @Nullable AttributeSet attributeSet) {
         int backgroundProgressColor = DEFAULT_BACKGROUND_PROGRESS_COLOR;
         int progressColor = DEFAULT_PROGRESS_COLOR;
@@ -209,6 +187,28 @@ public class ProgressRingView extends View {
 
         emptyRing.draw(canvas);
         progressRing.draw(canvas);
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+        SavedState savedState = new SavedState(superState);
+        savedState.animationDuration = animationDuration;
+        savedState.animated = animated;
+        savedState.progress = progress;
+        savedState.ringWidth = ringWidth;
+        return savedState;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        super.onRestoreInstanceState(state);
+        SavedState savedState = (SavedState) state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+        animationDuration = savedState.animationDuration;
+        animated = savedState.animated;
+        setProgress(savedState.progress);
+        setRingWidth(savedState.ringWidth);
     }
 
     private static class ProgressRingPainter extends EmptyRingPainter {
