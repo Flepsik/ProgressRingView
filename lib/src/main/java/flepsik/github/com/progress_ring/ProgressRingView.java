@@ -11,6 +11,8 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
 import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.support.annotation.FloatRange;
@@ -126,6 +128,28 @@ public class ProgressRingView extends View {
         return ringWidth;
     }
 
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+        SavedState savedState = new SavedState(superState);
+        savedState.animationDuration = animationDuration;
+        savedState.animated = animated;
+        savedState.progress = progress;
+        savedState.ringWidth = ringWidth;
+        return savedState;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        super.onRestoreInstanceState(state);
+        SavedState savedState = (SavedState) state;
+        super.onRestoreInstanceState(savedState.getSuperState());
+        animationDuration = savedState.animationDuration;
+        animated = savedState.animated;
+        setProgress(savedState.progress);
+        setRingWidth(savedState.ringWidth);
+    }
+
     protected void initialize(Context context, @Nullable AttributeSet attributeSet) {
         int backgroundProgressColor = DEFAULT_BACKGROUND_PROGRESS_COLOR;
         int progressColor = DEFAULT_PROGRESS_COLOR;
@@ -174,7 +198,8 @@ public class ProgressRingView extends View {
         }
         emptyRing.onSizeChanged(center, ringRadius);
         progressRing.onSizeChanged(center, ringRadius);
-        setRingWidth(ringWidth);
+        emptyRing.setRingWidth(ringWidth);
+        progressRing.setRingWidth(ringWidth);
         invalidate();
     }
 
@@ -296,5 +321,44 @@ public class ProgressRingView extends View {
         }
 
         abstract void draw(Canvas canvas);
+    }
+
+    private static class SavedState extends BaseSavedState {
+        float progress;
+        boolean animated;
+        int ringWidth;
+        int animationDuration;
+
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        private SavedState(Parcel in) {
+            super(in);
+            this.progress = in.readFloat();
+            this.ringWidth = in.readInt();
+            this.animated = in.readByte() != 0;
+            this.animationDuration = in.readInt();
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeFloat(this.progress);
+            out.writeInt(this.ringWidth);
+            out.writeByte(this.animated ? (byte) 1 : (byte) 0);
+            out.writeInt(this.animationDuration);
+        }
+
+        public static final Parcelable.Creator<SavedState> CREATOR
+                = new Parcelable.Creator<SavedState>() {
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
     }
 }
