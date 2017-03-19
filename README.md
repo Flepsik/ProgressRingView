@@ -1,6 +1,6 @@
 # ProgressRingView
 
-
+![alt tag](https://cloud.githubusercontent.com/assets/7210975/24082528/33614a1c-0cd8-11e7-8174-615fba55f9d9.jpg)
 
 ## Installation
 
