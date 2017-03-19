@@ -4,6 +4,7 @@
 
 ## Installation
 
+###Gradle:
 ```
 repositories {
     maven {
@@ -16,6 +17,16 @@ repositories {
 dependencies {
     compile 'com.github.flepsik:progress-ring-view:1.0.4'
 }
+```
+
+###Maven:
+```
+<dependency>
+  <groupId>com.github.flepsik</groupId>
+  <artifactId>progress-ring-view</artifactId>
+  <version>1.0.4</version>
+  <type>pom</type>
+</dependency>
 ```
 
 ## Usage
