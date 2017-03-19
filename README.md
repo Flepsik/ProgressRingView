@@ -4,7 +4,19 @@
 
 ## Installation
 
-TODO: Describe the installation process
+```
+repositories {
+    maven {
+        url 'https://dl.bintray.com/nuuneoi/maven/'
+    }
+}
+
+...
+
+dependencies {
+    compile 'com.github.flepsik:progress-ring-view:1.0.4'
+}
+```
 
 ## Usage
 There're a few attributes you can set:
