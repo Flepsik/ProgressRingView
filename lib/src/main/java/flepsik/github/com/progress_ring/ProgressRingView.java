@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -20,6 +21,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.Px;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.View;
 
 public class ProgressRingView extends View {
@@ -30,6 +32,7 @@ public class ProgressRingView extends View {
     public static final int DEFAULT_PROGRESS_COLOR = Color.parseColor("#27cf6b");
     public static final int ANIMATION_DURATION = 300;
 
+    private static final int DEFAULT_SIZE_DP = 50;
     private static final float DEFAULT_RING_WIDTH_RATIO = .1f;
     private static final float DEFAULT_RING_RADIUS_RATIO = .9f;
 
@@ -158,6 +161,37 @@ public class ProgressRingView extends View {
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int size = convertDpToPixel(DEFAULT_SIZE_DP, getContext());
+
+        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+
+        int width;
+        int height;
+
+        if (widthMode == MeasureSpec.EXACTLY) {
+            width = widthSize;
+        } else if (widthMode == MeasureSpec.AT_MOST) {
+            width = Math.min(size, widthSize);
+        } else {
+            width = size;
+        }
+
+        if (heightMode == MeasureSpec.EXACTLY) {
+            height = heightSize;
+        } else if (heightMode == MeasureSpec.AT_MOST) {
+            height = Math.min(size, heightSize);
+        } else {
+            height = size;
+        }
+
+        setMeasuredDimension(width, height);
+    }
+
+    @Override
     protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
         super.onSizeChanged(width, height, oldWidth, oldHeight);
 
@@ -209,6 +243,11 @@ public class ProgressRingView extends View {
         animated = savedState.animated;
         setProgress(savedState.progress);
         setRingWidth(savedState.ringWidth);
+    }
+
+    private int convertDpToPixel(int dp, Context context){
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        return dp * (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
     private static class ProgressRingPainter extends EmptyRingPainter {
