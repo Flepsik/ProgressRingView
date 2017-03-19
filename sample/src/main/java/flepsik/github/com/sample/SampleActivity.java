@@ -14,8 +14,6 @@ import flepsik.github.com.progress_ring.ProgressRingView;
 
 
 public class SampleActivity extends AppCompatActivity {
-    private ValueAnimator progressAnimator;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,23 +31,10 @@ public class SampleActivity extends AppCompatActivity {
         });
     }
 
+    private float lastProgress = 0f;
     private void animateProgress(ProgressRingView progressRingView) {
-        float startProgress = 0f;
-        float endProgress = 1f;
-
-        if (progressRingView.getProgress() == 1f) {
-            startProgress = 1f;
-            endProgress = 0f;
-        } else {
-            startProgress = progressRingView.getProgress();
-        }
-
-        if (progressAnimator != null && progressAnimator.isRunning()) {
-            progressAnimator.cancel();
-        }
-
-        progressAnimator = ObjectAnimator.ofFloat(progressRingView, "progress", startProgress, endProgress);
-        progressAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        progressAnimator.start();
-}
+        float targetProgress = lastProgress == 1f ? 0f : 1f;
+        lastProgress = targetProgress;
+        progressRingView.setProgress(targetProgress);
+    }
 }

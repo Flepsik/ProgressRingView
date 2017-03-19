@@ -1,6 +1,9 @@
 package flepsik.github.com.progress_ring;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -23,14 +26,19 @@ public class ProgressRingView extends View {
     public static final int DEFAULT_BACKGROUND_PROGRESS_COLOR = Color.parseColor("#e9e9e9");
     @ColorInt
     public static final int DEFAULT_PROGRESS_COLOR = Color.parseColor("#27cf6b");
+    public static final int ANIMATION_DURATION = 300;
 
     private static final float DEFAULT_RING_WIDTH_RATIO = .1f;
     private static final float DEFAULT_RING_RADIUS_RATIO = .9f;
+
     @FloatRange(from = 0f, to = 1f)
     private float progress;
     @Px
     private int ringWidth = DEFAULT_RING_WIDTH;
+    private boolean animated = false;
+    private int animationDuration = 300;
 
+    private ValueAnimator progressAnimator;
     private EmptyRingPainter emptyRing;
     private ProgressRingPainter progressRing;
 
@@ -55,11 +63,28 @@ public class ProgressRingView extends View {
         initialize(context, attrs);
     }
 
-    public void setProgress(@FloatRange(from = 0f, to = 1f) float progress) {
-        if (this.progress != progress) {
-            this.progress = progress;
-            progressRing.setProgress(progress);
-            invalidate();
+    public void setProgress(@FloatRange(from = 0f, to = 1f) float newProgress) {
+        if (this.progress != newProgress) {
+            if (animated) {
+                if (progressAnimator != null) {
+                    progressAnimator.cancel();
+                }
+
+                progressAnimator = ObjectAnimator.ofFloat(this.progress, newProgress);
+                progressAnimator.setDuration(animationDuration);
+                progressAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                        progress = (float) valueAnimator.getAnimatedValue();
+                        progressRing.setProgress(progress);
+                        ProgressRingView.this.invalidate();
+                    }
+                });
+                progressAnimator.start();
+            } else {
+                progressRing.setProgress(newProgress);
+                invalidate();
+            }
         }
     }
 
@@ -118,6 +143,10 @@ public class ProgressRingView extends View {
             );
             progressColor = attrsArray.getColor(R.styleable.ProgressRingView_progress_color,
                     DEFAULT_PROGRESS_COLOR);
+            animationDuration = attrsArray.getInt(
+                    R.styleable.ProgressRingView_animation_duration, ANIMATION_DURATION
+            );
+            animated = attrsArray.getBoolean(R.styleable.ProgressRingView_animated, false);
             attrsArray.recycle();
         }
 
@@ -131,7 +160,7 @@ public class ProgressRingView extends View {
         super.onSizeChanged(width, height, oldWidth, oldHeight);
 
         Point center = new Point(width / 2, height / 2);
-        int smallestSide = width > height ? height : width;
+        int smallestSide = Math.min(width, height);
         int radius = smallestSide / 2;
 
         int ringRadius;
