@@ -1,13 +1,36 @@
 # ProgressRingView
 
 
+
 ## Installation
 
 TODO: Describe the installation process
 
 ## Usage
-
-TODO: Write usage instructions
+There're a few attributes you can set:
+```
+ProgressRingView progress = (ProgressRingView) findViewById(R.id.first);
+progress.setProgress(.5f);
+progress.setAnimated(false);
+progress.setRingWidth(ProgressRingView.DEFAULT_RING_WIDTH);
+progress.setAnimationDuration(ProgressRingView.ANIMATION_DURATION);
+progress.setProgressColor(Color.RED);
+progress.setBackgroundEmptyColor(Color.LTGRAY);
+```
+or via xml
+```
+<flepsik.github.com.progress_ring.ProgressRingView
+        android:id="@+id/first"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:background_progress_color="#e4e7d3"
+        app:progress_color="#07be7a"
+        app:progress=".5"
+        app:ring_width="3dp"
+        app:animated="false"
+        app:animation_duration="500"/>
+```
 
 ## Contributing
 
@@ -16,14 +39,6 @@ TODO: Write usage instructions
 3. Commit your changes: `git commit -am 'Add some feature'`
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request :D
-
-## History
-
-TODO: Write history
-
-## Credits
-
-TODO: Write credits
 
 ## License
 ```
