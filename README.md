@@ -7,7 +7,7 @@
 Gradle:
 ```
 dependencies {
-    compile 'com.github.flepsik:progress-ring-view:1.1.0'
+    compile 'com.github.flepsik:progress-ring-view:1.1.1'
 }
 ```
 
@@ -16,7 +16,7 @@ Maven:
 <dependency>
   <groupId>com.github.flepsik</groupId>
   <artifactId>progress-ring-view</artifactId>
-  <version>1.0.9</version>
+  <version>1.1.1</version>
   <type>pom</type>
 </dependency>
 ```
@@ -34,7 +34,7 @@ progress.setBackgroundColor(Color.parseColor("#F29F8E"));
 progress.fillProgress(true);
 progress.setProgressFillColor(Color.parseColor("#F76156"));
 progress.setProgressColor(Color.RED);
-progress.setBackgroundEmptyColor(Color.LTGRAY);
+progress.setBackgroundProgressColor(Color.LTGRAY);
 ```
 or via xml
 ```
