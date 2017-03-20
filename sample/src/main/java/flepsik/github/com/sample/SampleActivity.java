@@ -25,7 +25,7 @@ public class SampleActivity extends AppCompatActivity {
         progress.fillProgress(true);
         progress.setProgressFillColor(Color.parseColor("#F76156"));
         progress.setProgressColor(Color.RED);
-        progress.setBackgroundEmptyColor(Color.LTGRAY);
+        progress.setBackgroundProgressColor(Color.LTGRAY);
 
         final ProgressRingView secondProgress = (ProgressRingView) findViewById(R.id.second);
         secondProgress.setOnClickListener(new View.OnClickListener() {

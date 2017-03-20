@@ -149,7 +149,7 @@ public class ProgressRingView extends View {
         return progress;
     }
 
-    public void setBackgroundEmptyColor(@ColorInt int color) {
+    public void setBackgroundProgressColor(@ColorInt int color) {
         emptyRing.setColor(color);
         invalidate();
     }
