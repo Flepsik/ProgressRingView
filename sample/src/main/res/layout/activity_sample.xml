@@ -50,7 +50,8 @@
             android:layout_height="match_parent"
             app:animated="true"
             app:progress=".9"
-            app:background_color="#7FFFAA"/>
+            app:background_color="#7FFFAA"
+            app:corner_edges="true" />
 
         <TextView
             android:layout_width="match_parent"

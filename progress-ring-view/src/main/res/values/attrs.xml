@@ -6,8 +6,9 @@
         <attr name="background_color" format="color" />
         <attr name="progress_color" format="color" />
         <attr name="background_progress_color" format="color" />
-        <attr name="inner_progress_color" format="color" />
+        <attr name="progress_fill_color" format="color" />
         <attr name="progress_fill" format="boolean" />
+        <attr name="corner_edges" format="boolean" />
         <attr name="animated" format="boolean" />
         <attr name="animation_duration" format="integer" />
     </declare-styleable>

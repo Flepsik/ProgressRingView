@@ -16,6 +16,7 @@ public class SampleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sample);
 
         ProgressRingView progress = (ProgressRingView) findViewById(R.id.first);
+        progress.cornerEdges(false);
         progress.setProgress(.3f);
         progress.setAnimated(false);
         progress.setRingWidth(20);

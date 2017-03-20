@@ -69,6 +69,17 @@ public class ProgressRingView extends View {
         initialize(context, attrs);
     }
 
+    public void cornerEdges(boolean state) {
+        if (progressRing.shouldCornerEdges() != state) {
+            progressRing.cornerEdges(state);
+            invalidate();
+        }
+    }
+
+    public boolean shouldCornerEdges() {
+        return progressRing.shouldCornerEdges();
+    }
+
     public boolean isAnimated() {
         return animated;
     }
@@ -188,7 +199,8 @@ public class ProgressRingView extends View {
         int backgroundProgressColor = DEFAULT_BACKGROUND_PROGRESS_COLOR;
         int progressColor = DEFAULT_PROGRESS_COLOR;
         int progressInnerColor = DEFAULT_PROGRESS_COLOR;
-        boolean shouldFillProgress = false;
+        boolean fillProgress = false;
+        boolean cornerEdges = true;
         float progress = 0f;
 
         if (attributeSet != null) {
@@ -211,16 +223,20 @@ public class ProgressRingView extends View {
                     DEFAULT_PROGRESS_COLOR
             );
             progressInnerColor = attrsArray.getColor(
-                    R.styleable.ProgressRingView_inner_progress_color,
+                    R.styleable.ProgressRingView_progress_fill_color,
                     DEFAULT_PROGRESS_COLOR
             );
             animationDuration = attrsArray.getInt(
                     R.styleable.ProgressRingView_animation_duration,
                     DEFAULT_ANIMATION_DURATION
             );
-            shouldFillProgress = attrsArray.getBoolean(
+            fillProgress = attrsArray.getBoolean(
                     R.styleable.ProgressRingView_progress_fill,
                     false
+            );
+            cornerEdges = attrsArray.getBoolean(
+                    R.styleable.ProgressRingView_corner_edges,
+                    true
             );
             animated = attrsArray.getBoolean(R.styleable.ProgressRingView_animated, false);
             attrsArray.recycle();
@@ -230,7 +246,8 @@ public class ProgressRingView extends View {
         emptyRing = new EmptyRingPainter(backgroundProgressColor);
         progressRing = new ProgressRingPainter(progressColor);
         progressRing.setInnerColor(progressInnerColor);
-        progressRing.setShouldFill(shouldFillProgress);
+        progressRing.setShouldFill(fillProgress);
+        progressRing.cornerEdges(cornerEdges);
         setProgress(progress);
     }
 
@@ -339,6 +356,7 @@ public class ProgressRingView extends View {
         private Point endCircle = new Point();
         private int sweepAngle;
         private int ringWidth;
+        private boolean shouldCornerEdges = true;
         private boolean shouldFill = false;
 
         ProgressRingPainter(@ColorInt final int color) {
@@ -364,8 +382,10 @@ public class ProgressRingView extends View {
             paint.setStyle(Paint.Style.STROKE);
             canvas.drawArc(rect, START_ANGLE, sweepAngle, false, paint);
             paint.setStyle(Paint.Style.FILL);
-//            canvas.drawCircle(startCircle.x, startCircle.y, ringWidth / 2, paint);
-//            canvas.drawCircle(endCircle.x, endCircle.y, ringWidth / 2, paint);
+            if (shouldCornerEdges) {
+                canvas.drawCircle(startCircle.x, startCircle.y, ringWidth / 2, paint);
+                canvas.drawCircle(endCircle.x, endCircle.y, ringWidth / 2, paint);
+            }
         }
 
         void setProgress(@FloatRange(from = 0f, to = 1f) float progress) {
@@ -395,6 +415,14 @@ public class ProgressRingView extends View {
 
         void setShouldFill(boolean shouldFill) {
             this.shouldFill = shouldFill;
+        }
+
+        boolean shouldCornerEdges() {
+            return shouldCornerEdges;
+        }
+
+        void cornerEdges(boolean state) {
+            shouldCornerEdges = state;
         }
 
         private Point calculateStartAngleOvalPoint(int angle) {
