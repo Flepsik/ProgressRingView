@@ -3,8 +3,6 @@ package flepsik.github.com.progress_ring;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -27,10 +25,12 @@ import android.view.View;
 public class ProgressRingView extends View {
     public static final int DEFAULT_RING_WIDTH = -1;
     @ColorInt
+    public static final int DEFAULT_BACKGROUND_COLOR = Color.TRANSPARENT;
+    @ColorInt
     public static final int DEFAULT_BACKGROUND_PROGRESS_COLOR = Color.parseColor("#e9e9e9");
     @ColorInt
     public static final int DEFAULT_PROGRESS_COLOR = Color.parseColor("#27cf6b");
-    public static final int ANIMATION_DURATION = 300;
+    public static final int DEFAULT_ANIMATION_DURATION = 300;
 
     private static final int DEFAULT_SIZE_DP = 50;
     private static final float DEFAULT_RING_WIDTH_RATIO = .1f;
@@ -41,9 +41,10 @@ public class ProgressRingView extends View {
     @Px
     private int ringWidth = DEFAULT_RING_WIDTH;
     private boolean animated = false;
-    private int animationDuration = 300;
+    private int animationDuration = DEFAULT_ANIMATION_DURATION;
 
     private ValueAnimator progressAnimator;
+    private BackgroundPainter background;
     private EmptyRingPainter emptyRing;
     private ProgressRingPainter progressRing;
 
@@ -136,6 +137,18 @@ public class ProgressRingView extends View {
         return progressRing.color;
     }
 
+    public void setBackgroundColor(@ColorInt int color) {
+        if (background.getColor() != color) {
+            background.setColor(color);
+            invalidate();
+        }
+    }
+
+    @ColorInt
+    public int getBackgroundColor() {
+        return background.getColor();
+    }
+
     public void setRingWidth(@Px int ringWidth) {
         this.ringWidth = ringWidth;
         emptyRing.setRingWidth(ringWidth);
@@ -148,6 +161,7 @@ public class ProgressRingView extends View {
     }
 
     protected void initialize(Context context, @Nullable AttributeSet attributeSet) {
+        int backgroundColor = DEFAULT_BACKGROUND_COLOR;
         int backgroundProgressColor = DEFAULT_BACKGROUND_PROGRESS_COLOR;
         int progressColor = DEFAULT_PROGRESS_COLOR;
         float progress = 0f;
@@ -156,21 +170,30 @@ public class ProgressRingView extends View {
             TypedArray attrsArray = context.obtainStyledAttributes(attributeSet, R.styleable.ProgressRingView);
             progress = attrsArray.getFloat(R.styleable.ProgressRingView_progress, .0f);
             ringWidth = attrsArray.getDimensionPixelSize(
-                    R.styleable.ProgressRingView_ring_width, DEFAULT_RING_WIDTH
+                    R.styleable.ProgressRingView_ring_width,
+                    DEFAULT_RING_WIDTH
+            );
+            backgroundColor = attrsArray.getColor(
+                    R.styleable.ProgressRingView_background_color,
+                    DEFAULT_BACKGROUND_COLOR
             );
             backgroundProgressColor = attrsArray.getColor(
                     R.styleable.ProgressRingView_background_progress_color,
                     DEFAULT_BACKGROUND_PROGRESS_COLOR
             );
-            progressColor = attrsArray.getColor(R.styleable.ProgressRingView_progress_color,
-                    DEFAULT_PROGRESS_COLOR);
+            progressColor = attrsArray.getColor(
+                    R.styleable.ProgressRingView_progress_color,
+                    DEFAULT_PROGRESS_COLOR
+            );
             animationDuration = attrsArray.getInt(
-                    R.styleable.ProgressRingView_animation_duration, ANIMATION_DURATION
+                    R.styleable.ProgressRingView_animation_duration,
+                    DEFAULT_ANIMATION_DURATION
             );
             animated = attrsArray.getBoolean(R.styleable.ProgressRingView_animated, false);
             attrsArray.recycle();
         }
 
+        background = new BackgroundPainter(backgroundColor);
         emptyRing = new EmptyRingPainter(backgroundProgressColor);
         progressRing = new ProgressRingPainter(progressColor);
         setProgress(progress);
@@ -224,6 +247,7 @@ public class ProgressRingView extends View {
             ringRadius = (int) (radius * DEFAULT_RING_RADIUS_RATIO);
             ringWidth = (int) (radius * DEFAULT_RING_WIDTH_RATIO);
         }
+        background.onSizeChanged(center, ringRadius);
         emptyRing.onSizeChanged(center, ringRadius);
         progressRing.onSizeChanged(center, ringRadius);
         emptyRing.setRingWidth(ringWidth);
@@ -235,6 +259,7 @@ public class ProgressRingView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        background.draw(canvas);
         emptyRing.draw(canvas);
         progressRing.draw(canvas);
     }
@@ -261,7 +286,7 @@ public class ProgressRingView extends View {
         setRingWidth(savedState.ringWidth);
     }
 
-    private int convertDpToPixel(int dp, Context context){
+    private int convertDpToPixel(int dp, Context context) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         return dp * (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
@@ -354,6 +379,36 @@ public class ProgressRingView extends View {
 
         private void initialize() {
             paint.setStyle(Paint.Style.STROKE);
+            paint.setColor(color);
+        }
+    }
+
+    private static class BackgroundPainter extends Painter {
+        @ColorInt
+        protected int color;
+
+        BackgroundPainter(@ColorInt int color) {
+            this.color = color;
+            initialize();
+        }
+
+        int getColor() {
+            return color;
+        }
+
+        void setColor(int color) {
+            this.color = color;
+            paint.setColor(color);
+        }
+
+        @Override
+        void draw(Canvas canvas) {
+            if (color != DEFAULT_BACKGROUND_COLOR) {
+                canvas.drawCircle(center.x, center.y, radius, paint);
+            }
+        }
+
+        private void initialize() {
             paint.setColor(color);
         }
     }

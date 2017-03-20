@@ -19,7 +19,8 @@ public class SampleActivity extends AppCompatActivity {
         progress.setProgress(.3f);
         progress.setAnimated(false);
         progress.setRingWidth(10);
-        progress.setAnimationDuration(ProgressRingView.ANIMATION_DURATION);
+        progress.setAnimationDuration(ProgressRingView.DEFAULT_ANIMATION_DURATION);
+        progress.setBackgroundColor(Color.parseColor("#F29F8E"));
         progress.setProgressColor(Color.RED);
         progress.setBackgroundEmptyColor(Color.LTGRAY);
 
