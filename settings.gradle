@@ -1,1 +1,1 @@
-include ':sample', ':lib'
+include ':sample', ':progress-ring-view'

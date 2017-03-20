@@ -68,6 +68,22 @@ public class ProgressRingView extends View {
         initialize(context, attrs);
     }
 
+    public boolean isAnimated() {
+        return animated;
+    }
+
+    public void setAnimated(boolean animated) {
+        this.animated = animated;
+    }
+
+    public int getAnimationDuration() {
+        return animationDuration;
+    }
+
+    public void setAnimationDuration(int animationDuration) {
+        this.animationDuration = animationDuration;
+    }
+
     public void setProgress(@FloatRange(from = 0f, to = 1f) float newProgress) {
         if (this.progress != newProgress) {
             if (animated) {

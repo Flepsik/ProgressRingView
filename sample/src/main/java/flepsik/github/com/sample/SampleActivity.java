@@ -1,5 +1,6 @@
 package flepsik.github.com.sample;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -14,8 +15,13 @@ public class SampleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample);
 
-        ProgressRingView firstProgress = (ProgressRingView) findViewById(R.id.first);
-        firstProgress.setProgress(.5f);
+        ProgressRingView progress = (ProgressRingView) findViewById(R.id.first);
+        progress.setProgress(.3f);
+        progress.setAnimated(false);
+        progress.setRingWidth(10);
+        progress.setAnimationDuration(ProgressRingView.ANIMATION_DURATION);
+        progress.setProgressColor(Color.RED);
+        progress.setBackgroundEmptyColor(Color.LTGRAY);
 
         final ProgressRingView secondProgress = (ProgressRingView) findViewById(R.id.second);
         secondProgress.setOnClickListener(new View.OnClickListener() {
