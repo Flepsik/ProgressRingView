@@ -7,7 +7,7 @@
 Gradle:
 ```
 dependencies {
-    compile 'com.github.flepsik:progress-ring-view:1.0.8'
+    compile 'com.github.flepsik:progress-ring-view:1.0.9'
 }
 ```
 
@@ -16,7 +16,7 @@ Maven:
 <dependency>
   <groupId>com.github.flepsik</groupId>
   <artifactId>progress-ring-view</artifactId>
-  <version>1.0.4</version>
+  <version>1.0.9</version>
   <type>pom</type>
 </dependency>
 ```
