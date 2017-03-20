@@ -6,14 +6,6 @@
 
 Gradle:
 ```
-repositories {
-    maven {
-        url 'https://dl.bintray.com/fleps/maven/'
-    }
-}
-
-...
-
 dependencies {
     compile 'com.github.flepsik:progress-ring-view:1.0.4'
 }
