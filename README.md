@@ -1,6 +1,6 @@
 # ProgressRingView
 
-![alt tag](https://cloud.githubusercontent.com/assets/7210975/24082528/33614a1c-0cd8-11e7-8174-615fba55f9d9.jpg)
+![alt tag](https://cloud.githubusercontent.com/assets/7210975/24097933/2c3b65dc-0d79-11e7-862f-210641d47635.jpg)
 
 ## Installation
 
@@ -29,6 +29,7 @@ progress.setProgress(.5f);
 progress.setAnimated(false);
 progress.setRingWidth(ProgressRingView.DEFAULT_RING_WIDTH);
 progress.setAnimationDuration(ProgressRingView.ANIMATION_DURATION);
+progress.setBackgroundColor(Color.parseColor("#F29F8E"));
 progress.setProgressColor(Color.RED);
 progress.setBackgroundEmptyColor(Color.LTGRAY);
 ```
@@ -44,7 +45,8 @@ or via xml
         app:progress=".5"
         app:ring_width="3dp"
         app:animated="false"
-        app:animation_duration="500"/>
+        app:animation_duration="500"
+        app:background_color="#7FFFAA"/>
 ```
 
 ## Contributing
