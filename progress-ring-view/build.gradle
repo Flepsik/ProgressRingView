@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/Flepsik/ProgressRingView'
     gitUrl = 'https://github.com/Flepsik/ProgressRingView.git'
 
-    libraryVersion = '1.0.8'
+    libraryVersion = '1.0.9'
 
     developerId = 'fleps'
     developerName = 'Bogdanov Philipp'
@@ -32,7 +32,7 @@ android {
         minSdkVersion 11
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0.8"
+        versionName "1.0.9"
     }
     buildTypes {
         release {
