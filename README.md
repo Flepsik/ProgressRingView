@@ -28,7 +28,7 @@ There're a few attributes you can set:
 ```
 ProgressRingView progress = (ProgressRingView) findViewById(R.id.first);
 progress.cornerEdges(false);
-progress.setProgress(.5f);
+progress.setProgress(.5f); //in range 0f..1f
 progress.setAnimated(false);
 progress.setRingWidth(ProgressRingView.DEFAULT_RING_WIDTH);
 progress.setAnimationDuration(ProgressRingView.ANIMATION_DURATION);
