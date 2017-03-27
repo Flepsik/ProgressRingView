@@ -43,13 +43,12 @@ or via xml
 <flepsik.github.com.progress_ring.ProgressRingView
         android:id="@+id/first"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         app:background_progress_color="#e4e7d3"
         app:progress_color="#07be7a"
-        app:progress=".5"
+        app:progress=".5" // in range 0f..1f
         app:ring_width="3dp"
-        app:animated="false"
+        app:animated="false" 
         app:animation_duration="500"
         app:background_color="#7FFFAA"
         app:corner_edges="true"
