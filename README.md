@@ -2,7 +2,7 @@
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-ProgressRingView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/5452) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.flepsik/progress-ring-view/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.flepsik/progress-ring-view)
 
-![alt tag](https://cloud.githubusercontent.com/assets/7210975/24115078/42cbe652-0db3-11e7-8c78-3ff9a6551171.jpg)
+![alt tag](https://cloud.githubusercontent.com/assets/7210975/24791994/ed7d8ab8-1b84-11e7-963e-6ff77186e26a.jpg)
 
 ## Installation
 
