@@ -7,40 +7,10 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-    <flepsik.github.com.progress_ring.ProgressRingView
-        android:id="@+id/first"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1">
-
-        <flepsik.github.com.progress_ring.ProgressRingView
-            android:id="@+id/second"
-            android:layout_width="150dp"
-            android:layout_gravity="center"
-            android:layout_height="match_parent"
-            app:animated="true"
-            app:animation_duration="500"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:maxLength="6"
-            android:maxLines="1"
-            android:text="Tap!"
-            android:textColor="#000000" />
-    </FrameLayout>
-
-
-    <FrameLayout
-        android:layout_width="100dp"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_marginTop="10dp"
         android:layout_weight="1">
 
@@ -62,5 +32,36 @@
             android:text="Great!"
             android:textColor="#000000" />
     </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:visibility="visible"
+        android:layout_weight="1">
+
+        <flepsik.github.com.progress_ring.ProgressRingView
+            android:id="@+id/second"
+            android:layout_width="150dp"
+            android:layout_gravity="center"
+            android:layout_height="match_parent"
+            app:animated="true"
+            app:animation_duration="500"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:maxLength="6"
+            android:maxLines="1"
+            android:text="Tap!"
+            android:textColor="#000000" />
+    </FrameLayout>
+
+    <flepsik.github.com.progress_ring.ProgressRingView
+        android:id="@+id/first"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
 
 </LinearLayout>
