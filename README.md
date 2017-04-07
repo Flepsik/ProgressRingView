@@ -1,6 +1,8 @@
-# ProgressRingView
+# ProgressRingView 
 
-![alt tag](https://cloud.githubusercontent.com/assets/7210975/24115078/42cbe652-0db3-11e7-8c78-3ff9a6551171.jpg)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-ProgressRingView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/5452) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.flepsik/progress-ring-view/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.flepsik/progress-ring-view)
+
+![alt tag](https://cloud.githubusercontent.com/assets/7210975/24792164/8822c0c4-1b85-11e7-811f-9725dd28d116.jpg)
 
 ## Installation
 
@@ -26,7 +28,7 @@ There're a few attributes you can set:
 ```
 ProgressRingView progress = (ProgressRingView) findViewById(R.id.first);
 progress.cornerEdges(false);
-progress.setProgress(.5f);
+progress.setProgress(.5f); //in range 0f..1f
 progress.setAnimated(false);
 progress.setRingWidth(ProgressRingView.DEFAULT_RING_WIDTH);
 progress.setAnimationDuration(ProgressRingView.ANIMATION_DURATION);
@@ -41,13 +43,12 @@ or via xml
 <flepsik.github.com.progress_ring.ProgressRingView
         android:id="@+id/first"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         app:background_progress_color="#e4e7d3"
         app:progress_color="#07be7a"
-        app:progress=".5"
+        app:progress=".5" // in range 0f..1f
         app:ring_width="3dp"
-        app:animated="false"
+        app:animated="false" 
         app:animation_duration="500"
         app:background_color="#7FFFAA"
         app:corner_edges="true"
@@ -56,6 +57,9 @@ or via xml
 ```
 
 ## Contributing
+Create an issue 
+
+or 
 
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
