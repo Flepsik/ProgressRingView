@@ -32,7 +32,7 @@ public class ProgressRingView extends View {
     public static final int DEFAULT_PROGRESS_COLOR = Color.parseColor("#27cf6b");
     public static final int DEFAULT_ANIMATION_DURATION = 300;
 
-    private static final int DEFAULT_SIZE_DP = 50;
+    private static final float DEFAULT_SIZE_DP = 50;
     private static final float DEFAULT_RING_WIDTH_RATIO = .1f;
     private static final float DEFAULT_RING_RADIUS_RATIO = .9f;
 
@@ -338,9 +338,8 @@ public class ProgressRingView extends View {
         setRingWidth(savedState.ringWidth);
     }
 
-    private int convertDpToPixel(int dp, Context context) {
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        return dp * (metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+    private static int convertDpToPixel(float dp, Context context) {
+        return Math.round(context.getResources().getDisplayMetrics().density * dp);
     }
 
     private static class ProgressRingPainter extends EmptyRingPainter {
