@@ -327,9 +327,12 @@ public class ProgressRingView extends View {
         return savedState;
     }
 
-    @Override
     protected void onRestoreInstanceState(Parcelable state) {
-        super.onRestoreInstanceState(state);
+        if (!(state instanceof SavedState)) {
+            super.onRestoreInstanceState(state);
+            return;
+        }
+
         SavedState savedState = (SavedState) state;
         super.onRestoreInstanceState(savedState.getSuperState());
         animationDuration = savedState.animationDuration;
