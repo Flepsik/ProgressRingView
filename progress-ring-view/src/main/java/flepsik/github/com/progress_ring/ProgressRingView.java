@@ -533,7 +533,7 @@ public class ProgressRingView extends View {
         abstract void draw(Canvas canvas);
     }
 
-    static abstract class AnimationUpdateListener {
+    public static abstract class AnimationUpdateListener {
 
         public void onAnimationProgress(float progress) {
             // Do nothing
