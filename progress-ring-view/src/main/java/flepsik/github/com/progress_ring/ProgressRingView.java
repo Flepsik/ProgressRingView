@@ -48,7 +48,7 @@ public class ProgressRingView extends View {
     private BackgroundPainter background;
     private EmptyRingPainter emptyRing;
     private ProgressRingPainter progressRing;
-    private AnimationEndListener listener = null;
+    private AnimationUpdateListener listener = null;
 
     public ProgressRingView(Context context) {
         super(context);
@@ -119,6 +119,10 @@ public class ProgressRingView extends View {
     @ColorInt
     public int getProgressInnerColor() {
         return progressRing.getInnerColor();
+    }
+
+    public void setListener(AnimationUpdateListener listener){
+        this.listener = listener;
     }
 
     public void setProgress(@FloatRange(from = 0f, to = 1f) float newProgress) {
@@ -529,9 +533,9 @@ public class ProgressRingView extends View {
         abstract void draw(Canvas canvas);
     }
 
-    static abstract class AnimationEndListener {
+    static abstract class AnimationUpdateListener {
 
-        public void onAnimationProgress(float progress) {
+        void onAnimationProgress(float progress) {
             // Do nothing
         }
     }
