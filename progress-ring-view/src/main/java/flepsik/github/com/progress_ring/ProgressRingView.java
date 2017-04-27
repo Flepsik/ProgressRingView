@@ -535,7 +535,7 @@ public class ProgressRingView extends View {
 
     static abstract class AnimationUpdateListener {
 
-        void onAnimationProgress(float progress) {
+        public void onAnimationProgress(float progress) {
             // Do nothing
         }
     }
