@@ -1,5 +1,6 @@
 package flepsik.github.com.progress_ring;
 
+import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -47,6 +48,7 @@ public class ProgressRingView extends View {
     private BackgroundPainter background;
     private EmptyRingPainter emptyRing;
     private ProgressRingPainter progressRing;
+    private AnimationEndListener listener = null;
 
     public ProgressRingView(Context context) {
         super(context);
@@ -132,6 +134,9 @@ public class ProgressRingView extends View {
                     @Override
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
                         progress = (float) valueAnimator.getAnimatedValue();
+                        if (listener != null){
+                            listener.onAnimationProgress(progress);
+                        }
                         progressRing.setProgress(progress);
                         ProgressRingView.this.invalidate();
                     }
@@ -522,6 +527,13 @@ public class ProgressRingView extends View {
         }
 
         abstract void draw(Canvas canvas);
+    }
+
+    static abstract class AnimationEndListener {
+
+        public void onAnimationProgress(float progress) {
+            // Do nothing
+        }
     }
 
     private static class SavedState extends BaseSavedState {
