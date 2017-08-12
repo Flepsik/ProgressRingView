@@ -11,5 +11,7 @@
         <attr name="corner_edges" format="boolean" />
         <attr name="animated" format="boolean" />
         <attr name="animation_duration" format="integer" />
+        <attr name="start_angle" format="integer" />
+        <attr name="sweep_angle_degree" format="integer" />
     </declare-styleable>
 </resources>
