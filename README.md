@@ -2,14 +2,14 @@
 
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-ProgressRingView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/5452) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.flepsik/progress-ring-view/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.flepsik/progress-ring-view)
 
-![alt tag](https://cloud.githubusercontent.com/assets/7210975/24792164/8822c0c4-1b85-11e7-811f-9725dd28d116.jpg)
+![alt tag](https://user-images.githubusercontent.com/7210975/40885282-234b783c-672c-11e8-8d31-0214111ae92e.png)
 
 ## Installation
 
 Gradle:
 ```
 dependencies {
-    compile 'com.github.flepsik:progress-ring-view:1.1.2'
+    compile 'com.github.flepsik:progress-ring-view:1.2.0'
 }
 ```
 
@@ -18,7 +18,7 @@ Maven:
 <dependency>
   <groupId>com.github.flepsik</groupId>
   <artifactId>progress-ring-view</artifactId>
-  <version>1.1.2</version>
+  <version>1.2.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -33,8 +33,8 @@ progress.setAnimated(false);
 progress.setRingWidth(ProgressRingView.DEFAULT_RING_WIDTH);
 progress.setAnimationDuration(ProgressRingView.ANIMATION_DURATION);
 progress.setBackgroundColor(Color.parseColor("#F29F8E"));
-progress.fillProgress(true);
-progress.setProgressFillColor(Color.parseColor("#F76156"));
+progress.fillInnerProgress(true);
+progress.setProgressInnerFillColor(Color.parseColor("#F76156"));
 progress.setProgressColor(Color.RED);
 progress.setBackgroundProgressColor(Color.LTGRAY);
 ```
@@ -52,8 +52,8 @@ or via xml
         app:animation_duration="500"
         app:background_color="#7FFFAA"
         app:corner_edges="true"
-        app:progress_fill="false"
-        app:inner_progress_color="07be7a"/>
+        app:progress_inner_fill="false"
+        app:progress_inner_fill_color="07be7a"/>
 ```
 
 ## Contributing
