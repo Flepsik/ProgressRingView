@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.AnticipateInterpolator;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.DecelerateInterpolator;
 
 import flepsik.github.com.progress_ring.ProgressRingView;
 
@@ -28,6 +31,7 @@ public class SampleActivity extends AppCompatActivity {
         progress.setBackgroundProgressColor(Color.LTGRAY);
 
         final ProgressRingView secondProgress = findViewById(R.id.second);
+        secondProgress.setInterpolator(new DecelerateInterpolator());
         secondProgress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

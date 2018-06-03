@@ -21,6 +21,8 @@ import android.support.annotation.Px;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Interpolator;
 
 public class ProgressRingView extends View {
     public static final int DEFAULT_RING_WIDTH = -1;
@@ -37,6 +39,7 @@ public class ProgressRingView extends View {
     private static final float DEFAULT_RING_RADIUS_RATIO = .9f;
     private static final int DEFAULT_START_ANGLE = -90;
     private static final int DEFAULT_SWEEP_ANGLE_DEGREE = 360;
+    private static final Interpolator DEFAULT_INTERPOLATOR = new AccelerateDecelerateInterpolator();
 
     @FloatRange(from = 0f, to = 1f)
     private float progress;
@@ -49,7 +52,8 @@ public class ProgressRingView extends View {
     private BackgroundPainter background;
     private EmptyRingPainter emptyRing;
     private ProgressRingPainter progressRing;
-    private AnimationUpdateListener listener = null;
+    private AnimationUpdateListener listener;
+    private Interpolator interpolator = DEFAULT_INTERPOLATOR;
 
     public ProgressRingView(final Context context) {
         super(context);
@@ -92,6 +96,14 @@ public class ProgressRingView extends View {
         this.animated = animated;
     }
 
+    public Interpolator getInterpolator() {
+        return interpolator;
+    }
+
+    public void setInterpolator(final Interpolator interpolator) {
+        this.interpolator = interpolator;
+    }
+
     public int getAnimationDuration() {
         return animationDuration;
     }
@@ -129,7 +141,10 @@ public class ProgressRingView extends View {
     }
 
     public void setProgress(@FloatRange(from = 0f, to = 1f) final float newProgress) {
-        if (isInEditMode()) animated = false;
+        if (isInEditMode()) {
+            animated = false;
+        }
+
         if (this.progress != newProgress) {
             emptyRing.calculateStartAngleOvalPoint();
             if (animated) {
@@ -138,14 +153,17 @@ public class ProgressRingView extends View {
                 }
 
                 progressAnimator = ObjectAnimator.ofFloat(this.progress, newProgress);
+                progressAnimator.setInterpolator(interpolator);
                 progressAnimator.setDuration(animationDuration);
                 progressAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
-                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    public void onAnimationUpdate(final ValueAnimator valueAnimator) {
                         progress = (float) valueAnimator.getAnimatedValue();
+
                         if (listener != null){
                             listener.onAnimationProgress(progress);
                         }
+
                         progressRing.setProgress(progress);
                         ProgressRingView.this.invalidate();
                     }
