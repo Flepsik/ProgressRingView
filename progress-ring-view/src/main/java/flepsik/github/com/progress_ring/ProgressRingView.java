@@ -343,10 +343,7 @@ public class ProgressRingView extends View {
     protected Parcelable onSaveInstanceState() {
         final Parcelable superState = super.onSaveInstanceState();
         final SavedState savedState = new SavedState(superState);
-        savedState.animationDuration = animationDuration;
-        savedState.animated = animated;
         savedState.progress = progress;
-        savedState.ringWidth = ringWidth;
         return savedState;
     }
 
@@ -358,10 +355,7 @@ public class ProgressRingView extends View {
 
         final SavedState savedState = (SavedState) state;
         super.onRestoreInstanceState(savedState.getSuperState());
-        animationDuration = savedState.animationDuration;
-        animated = savedState.animated;
         setProgress(savedState.progress);
-        setRingWidth(savedState.ringWidth);
     }
 
     private static int convertDpToPixel(final float dp, final Context context) {
@@ -592,9 +586,7 @@ public class ProgressRingView extends View {
 
     private static class SavedState extends BaseSavedState {
         float progress;
-        int ringWidth;
-        boolean animated;
-        int animationDuration;
+
 
         SavedState(final Parcelable superState) {
             super(superState);
@@ -603,18 +595,12 @@ public class ProgressRingView extends View {
         private SavedState(final Parcel in) {
             super(in);
             this.progress = in.readFloat();
-            this.ringWidth = in.readInt();
-            this.animated = in.readByte() != 0;
-            this.animationDuration = in.readInt();
         }
 
         @Override
         public void writeToParcel(final Parcel out, final int flags) {
             super.writeToParcel(out, flags);
             out.writeFloat(this.progress);
-            out.writeInt(this.ringWidth);
-            out.writeByte(this.animated ? (byte) 1 : (byte) 0);
-            out.writeInt(this.animationDuration);
         }
 
         public static final Parcelable.Creator<SavedState> CREATOR
