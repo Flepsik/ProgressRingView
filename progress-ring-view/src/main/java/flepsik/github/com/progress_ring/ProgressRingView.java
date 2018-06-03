@@ -124,11 +124,11 @@ public class ProgressRingView extends View {
         return progressRing.getInnerColor();
     }
 
-    public void setListener(AnimationUpdateListener listener){
+    public void setListener(final AnimationUpdateListener listener){
         this.listener = listener;
     }
 
-    public void setProgress(@FloatRange(from = 0f, to = 1f) float newProgress) {
+    public void setProgress(@FloatRange(from = 0f, to = 1f) final float newProgress) {
         if (isInEditMode()) animated = false;
         if (this.progress != newProgress) {
             emptyRing.calculateStartAngleOvalPoint();
@@ -376,7 +376,7 @@ public class ProgressRingView extends View {
 
         private int sweepAngle;
 
-        ProgressRingPainter(@ColorInt final int color, int startAngle, int sweepAngleDegree) {
+        ProgressRingPainter(@ColorInt final int color, final int startAngle, final int sweepAngleDegree) {
             super(color, startAngle, sweepAngleDegree);
             initialize();
         }
@@ -438,7 +438,7 @@ public class ProgressRingView extends View {
         boolean shouldFill = false;
         boolean shouldCornerEdges = true;
 
-        EmptyRingPainter(@ColorInt final int color, int startAngle, int sweepAngleDegree) {
+        EmptyRingPainter(@ColorInt final int color, final int startAngle, final int sweepAngleDegree) {
             setColor(color);
             setStartAngle(startAngle);
             setSweepAngleDegree(sweepAngleDegree);
@@ -446,14 +446,14 @@ public class ProgressRingView extends View {
         }
 
         @Override
-        void onSizeChanged(Point center, int newRadius) {
+        void onSizeChanged(final Point center, final int newRadius) {
             super.onSizeChanged(center, newRadius);
             rect.set(center.x - radius, center.y - radius, center.x + radius, center.y + radius);
             calculateStartAngleOvalPoint();
         }
 
         @Override
-        void draw(Canvas canvas) {
+        void draw(final Canvas canvas) {
             if (shouldFill) {
                 paint.setStyle(Paint.Style.FILL);
                 canvas.drawArc(rect, startAngle, sweepAngleDegree, true, paint);
@@ -486,7 +486,7 @@ public class ProgressRingView extends View {
             return startAngle;
         }
 
-        void setStartAngle(int startAngle) {
+        void setStartAngle(final int startAngle) {
             this.startAngle = startAngle;
         }
 
@@ -494,7 +494,7 @@ public class ProgressRingView extends View {
             return sweepAngleDegree;
         }
 
-        void setSweepAngleDegree(int sweepAngleDegree) {
+        void setSweepAngleDegree(final int sweepAngleDegree) {
             this.sweepAngleDegree = sweepAngleDegree;
         }
 
@@ -502,7 +502,7 @@ public class ProgressRingView extends View {
             return shouldCornerEdges;
         }
 
-        void cornerEdges(boolean state) {
+        void cornerEdges(final boolean state) {
             shouldCornerEdges = state;
         }
 
@@ -510,7 +510,7 @@ public class ProgressRingView extends View {
             return shouldFill;
         }
 
-        void setShouldFill(boolean shouldFill) {
+        void setShouldFill(final boolean shouldFill) {
             this.shouldFill = shouldFill;
         }
 
@@ -524,9 +524,9 @@ public class ProgressRingView extends View {
             endCircle = calculateStartAngleOvalPoint(sweepAngleDegree + startAngle);
         }
 
-        Point calculateStartAngleOvalPoint(int angle) {
-            Point result = new Point();
-            double radians = Math.toRadians(angle);
+        Point calculateStartAngleOvalPoint(final int angle) {
+            final Point result = new Point();
+            final double radians = Math.toRadians(angle);
             result.x = (int) (center.x + radius * Math.cos(radians));
             result.y = (int) (center.y + radius * Math.sin(radians));
             return result;
@@ -583,7 +583,7 @@ public class ProgressRingView extends View {
         abstract void draw(Canvas canvas);
     }
 
-    public static abstract class AnimationUpdateListener {
+    public abstract static class AnimationUpdateListener {
 
         public void onAnimationProgress(float progress) {
             // Do nothing

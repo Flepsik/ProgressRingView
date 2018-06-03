@@ -15,7 +15,7 @@ public class SampleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample);
 
-        final ProgressRingView progress = (ProgressRingView) findViewById(R.id.first);
+        final ProgressRingView progress = findViewById(R.id.first);
         progress.cornerEdges(false);
         progress.setProgress(.3f);
         progress.setAnimated(false);
@@ -27,7 +27,7 @@ public class SampleActivity extends AppCompatActivity {
         progress.setProgressColor(Color.RED);
         progress.setBackgroundProgressColor(Color.LTGRAY);
 
-        final ProgressRingView secondProgress = (ProgressRingView) findViewById(R.id.second);
+        final ProgressRingView secondProgress = findViewById(R.id.second);
         secondProgress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

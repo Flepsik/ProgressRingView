@@ -20,4 +20,5 @@ android {
 
 dependencies {
     implementation project(path: ':progress-ring-view')
+    implementation 'com.android.support:appcompat-v7:27.1.1'
 }

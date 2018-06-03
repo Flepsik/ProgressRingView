@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    android:gravity="center_horizontal"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#FFFFFF"
+              android:gravity="center_horizontal"
+              android:orientation="vertical">
 
 
     <FrameLayout
@@ -19,9 +19,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:animated="true"
-            app:progress=".9"
-            app:background_color="#7FFFAA"
-            app:corner_edges="true" />
+            app:corner_edges="true"
+            app:progress=".5"
+            app:start_angle="-215"
+            app:sweep_angle_degree="250"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -30,23 +31,24 @@
             android:maxLength="6"
             android:maxLines="1"
             android:text="Great!"
-            android:textColor="#000000" />
+            android:textColor="#000000"/>
     </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"
-        android:visibility="visible"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:visibility="visible">
 
         <flepsik.github.com.progress_ring.ProgressRingView
             android:id="@+id/second"
             android:layout_width="150dp"
-            android:layout_gravity="center"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             app:animated="true"
-            app:animation_duration="500"/>
+            app:animation_duration="500"
+            app:background_color="#7FFFAA"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -55,13 +57,13 @@
             android:maxLength="6"
             android:maxLines="1"
             android:text="Tap!"
-            android:textColor="#000000" />
+            android:textColor="#000000"/>
     </FrameLayout>
 
     <flepsik.github.com.progress_ring.ProgressRingView
         android:id="@+id/first"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="1"/>
 
 </LinearLayout>
