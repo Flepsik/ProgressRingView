@@ -384,7 +384,7 @@ public class ProgressRingView extends View {
             paint.setStyle(Paint.Style.STROKE);
             canvas.drawArc(rect, START_ANGLE, sweepAngle, false, paint);
             paint.setStyle(Paint.Style.FILL);
-            if (shouldCornerEdges) {
+            if (shouldCornerEdges && sweepAngle > 0) {
                 canvas.drawCircle(startCircle.x, startCircle.y, ringWidth / 2, paint);
                 canvas.drawCircle(endCircle.x, endCircle.y, ringWidth / 2, paint);
             }
