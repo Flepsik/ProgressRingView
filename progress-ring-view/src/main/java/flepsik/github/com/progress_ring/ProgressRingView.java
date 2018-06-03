@@ -1,6 +1,5 @@
 package flepsik.github.com.progress_ring;
 
-import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -112,28 +111,27 @@ public class ProgressRingView extends View {
         this.animationDuration = animationDuration;
     }
 
-    public void fillProgress(final boolean state) {
-        if (progressRing.shouldFill() != state) {
-            emptyRing.setShouldFill(state);
-            progressRing.setShouldFill(state);
+    public void fillInnerProgress(final boolean state) {
+        if (progressRing.shouldFillInnerProgress() != state) {
+            progressRing.setShouldFillInnerProgress(state);
             invalidate();
         }
     }
 
-    public boolean shouldFillProgress() {
-        return progressRing.shouldFill();
+    public boolean shouldFillInnerProgress() {
+        return progressRing.shouldFillInnerProgress();
     }
 
-    public void setProgressFillColor(@ColorInt final int color) {
+    public void setProgressInnerFillColor(@ColorInt final int color) {
         if (progressRing.getColor() != color) {
-            progressRing.setInnerColor(color);
+            progressRing.setInnerProgressColor(color);
             invalidate();
         }
     }
 
     @ColorInt
-    public int getProgressInnerColor() {
-        return progressRing.getInnerColor();
+    public int getProgressInnerFillColor() {
+        return progressRing.getInnerProgressColor();
     }
 
     public void setListener(final AnimationUpdateListener listener){
@@ -263,7 +261,7 @@ public class ProgressRingView extends View {
                     DEFAULT_PROGRESS_COLOR
             );
             progressInnerColor = attrsArray.getColor(
-                    R.styleable.ProgressRingView_progress_fill_color,
+                    R.styleable.ProgressRingView_progress_inner_fill_color,
                     DEFAULT_PROGRESS_COLOR
             );
             animationDuration = attrsArray.getInt(
@@ -271,7 +269,7 @@ public class ProgressRingView extends View {
                     DEFAULT_ANIMATION_DURATION
             );
             fillProgress = attrsArray.getBoolean(
-                    R.styleable.ProgressRingView_progress_fill,
+                    R.styleable.ProgressRingView_progress_inner_fill,
                     false
             );
             cornerEdges = attrsArray.getBoolean(
@@ -285,9 +283,8 @@ public class ProgressRingView extends View {
         background = new BackgroundPainter(backgroundColor);
         emptyRing = new EmptyRingPainter(backgroundProgressColor, startAngle, sweepAngleDegree);
         progressRing = new ProgressRingPainter(progressColor, startAngle, sweepAngleDegree);
-        progressRing.setInnerColor(progressInnerColor);
-        emptyRing.setShouldFill(fillProgress);
-        progressRing.setShouldFill(fillProgress);
+        progressRing.setInnerProgressColor(progressInnerColor);
+        progressRing.setShouldFillInnerProgress(fillProgress);
         emptyRing.cornerEdges(cornerEdges);
         progressRing.cornerEdges(cornerEdges);
         setProgress(progress);
@@ -334,6 +331,7 @@ public class ProgressRingView extends View {
 
         final int ringRadius;
         final int ringWidth;
+
         if (this.ringWidth != DEFAULT_RING_WIDTH) {
             ringRadius = radius - this.ringWidth;
             ringWidth = this.ringWidth;
@@ -341,6 +339,7 @@ public class ProgressRingView extends View {
             ringRadius = (int) (radius * DEFAULT_RING_RADIUS_RATIO);
             ringWidth = (int) (radius * DEFAULT_RING_WIDTH_RATIO);
         }
+
         background.onSizeChanged(center, ringRadius);
         emptyRing.onSizeChanged(center, ringRadius);
         progressRing.onSizeChanged(center, ringRadius);
@@ -385,8 +384,8 @@ public class ProgressRingView extends View {
         private float progress;
         @ColorInt
         private int innerColor = color;
-
         private int sweepAngle;
+        private boolean shouldFillInnerProgress;
 
         ProgressRingPainter(@ColorInt final int color, final int startAngle, final int sweepAngleDegree) {
             super(color, startAngle, sweepAngleDegree);
@@ -402,7 +401,7 @@ public class ProgressRingView extends View {
 
         @Override
         void draw(final Canvas canvas) {
-            if (shouldFill) {
+            if (shouldFillInnerProgress) {
                 paint.setColor(innerColor == DEFAULT_PROGRESS_COLOR ? color : innerColor);
                 paint.setStyle(Paint.Style.FILL);
                 canvas.drawArc(rect, startAngle, sweepAngle, true, paint);
@@ -427,12 +426,20 @@ public class ProgressRingView extends View {
         }
 
         @ColorInt
-        int getInnerColor() {
+        int getInnerProgressColor() {
             return innerColor;
         }
 
-        void setInnerColor(@ColorInt final int innerColor) {
+        void setInnerProgressColor(@ColorInt final int innerColor) {
             this.innerColor = innerColor;
+        }
+
+        boolean shouldFillInnerProgress() {
+            return shouldFillInnerProgress;
+        }
+
+        void setShouldFillInnerProgress(final boolean shouldFill) {
+            this.shouldFillInnerProgress = shouldFill;
         }
 
         private void initialize() {
@@ -449,7 +456,6 @@ public class ProgressRingView extends View {
         RectF rect = new RectF();
         Point endCircle = new Point();
         Point startCircle = new Point();
-        boolean shouldFill = false;
         boolean shouldCornerEdges = true;
 
         EmptyRingPainter(@ColorInt final int color, final int startAngle, final int sweepAngleDegree) {
@@ -468,11 +474,6 @@ public class ProgressRingView extends View {
 
         @Override
         void draw(final Canvas canvas) {
-            if (shouldFill) {
-                paint.setStyle(Paint.Style.FILL);
-                canvas.drawArc(rect, startAngle, sweepAngleDegree, true, paint);
-            }
-
             paint.setStyle(Paint.Style.STROKE);
             canvas.drawArc(rect, startAngle, sweepAngleDegree, false, paint);
             paint.setStyle(Paint.Style.FILL);
@@ -520,14 +521,6 @@ public class ProgressRingView extends View {
 
         void cornerEdges(final boolean state) {
             shouldCornerEdges = state;
-        }
-
-        boolean shouldFill() {
-            return shouldFill;
-        }
-
-        void setShouldFill(final boolean shouldFill) {
-            this.shouldFill = shouldFill;
         }
 
         private void initialize() {

@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.animation.AnticipateInterpolator;
-import android.view.animation.BounceInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import flepsik.github.com.progress_ring.ProgressRingView;
@@ -25,8 +23,8 @@ public class SampleActivity extends AppCompatActivity {
         progress.setRingWidth(20);
         progress.setAnimationDuration(ProgressRingView.DEFAULT_ANIMATION_DURATION);
         progress.setBackgroundColor(Color.parseColor("#F29F8E"));
-        progress.fillProgress(true);
-        progress.setProgressFillColor(Color.parseColor("#F76156"));
+        progress.fillInnerProgress(true);
+        progress.setProgressInnerFillColor(Color.parseColor("#F76156"));
         progress.setProgressColor(Color.RED);
         progress.setBackgroundProgressColor(Color.LTGRAY);
 
