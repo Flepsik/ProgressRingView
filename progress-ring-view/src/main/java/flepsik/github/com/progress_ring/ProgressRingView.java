@@ -1,5 +1,6 @@
 package flepsik.github.com.progress_ring;
 
+import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -19,7 +20,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.Px;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.View;
 
 public class ProgressRingView extends View {
@@ -35,6 +35,8 @@ public class ProgressRingView extends View {
     private static final float DEFAULT_SIZE_DP = 50;
     private static final float DEFAULT_RING_WIDTH_RATIO = .1f;
     private static final float DEFAULT_RING_RADIUS_RATIO = .9f;
+    private static final int DEFAULT_START_ANGLE = -90;
+    private static final int DEFAULT_SWEEP_ANGLE_DEGREE = 360;
 
     @FloatRange(from = 0f, to = 1f)
     private float progress;
@@ -47,6 +49,7 @@ public class ProgressRingView extends View {
     private BackgroundPainter background;
     private EmptyRingPainter emptyRing;
     private ProgressRingPainter progressRing;
+    private AnimationUpdateListener listener = null;
 
     public ProgressRingView(final Context context) {
         super(context);
@@ -72,6 +75,7 @@ public class ProgressRingView extends View {
     public void cornerEdges(final boolean state) {
         if (progressRing.shouldCornerEdges() != state) {
             progressRing.cornerEdges(state);
+            emptyRing.cornerEdges(state);
             invalidate();
         }
     }
@@ -98,6 +102,7 @@ public class ProgressRingView extends View {
 
     public void fillProgress(final boolean state) {
         if (progressRing.shouldFill() != state) {
+            emptyRing.setShouldFill(state);
             progressRing.setShouldFill(state);
             invalidate();
         }
@@ -119,8 +124,14 @@ public class ProgressRingView extends View {
         return progressRing.getInnerColor();
     }
 
-    public void setProgress(@FloatRange(from = 0f, to = 1f) final float newProgress) {
+    public void setListener(AnimationUpdateListener listener){
+        this.listener = listener;
+    }
+
+    public void setProgress(@FloatRange(from = 0f, to = 1f) float newProgress) {
+        if (isInEditMode()) animated = false;
         if (this.progress != newProgress) {
+            emptyRing.calculateStartAngleOvalPoint();
             if (animated) {
                 if (progressAnimator != null) {
                     progressAnimator.cancel();
@@ -132,6 +143,9 @@ public class ProgressRingView extends View {
                     @Override
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
                         progress = (float) valueAnimator.getAnimatedValue();
+                        if (listener != null){
+                            listener.onAnimationProgress(progress);
+                        }
                         progressRing.setProgress(progress);
                         ProgressRingView.this.invalidate();
                     }
@@ -199,6 +213,8 @@ public class ProgressRingView extends View {
         int backgroundProgressColor = DEFAULT_BACKGROUND_PROGRESS_COLOR;
         int progressColor = DEFAULT_PROGRESS_COLOR;
         int progressInnerColor = DEFAULT_PROGRESS_COLOR;
+        int sweepAngleDegree = DEFAULT_SWEEP_ANGLE_DEGREE;
+        int startAngle = DEFAULT_START_ANGLE;
         boolean fillProgress = false;
         boolean cornerEdges = true;
         float progress = 0f;
@@ -206,6 +222,12 @@ public class ProgressRingView extends View {
         if (attributeSet != null) {
             final TypedArray attrsArray = context.obtainStyledAttributes(attributeSet, R.styleable.ProgressRingView);
             progress = attrsArray.getFloat(R.styleable.ProgressRingView_progress, .0f);
+            sweepAngleDegree = attrsArray.getInt(
+                    R.styleable.ProgressRingView_sweep_angle_degree,
+                    DEFAULT_SWEEP_ANGLE_DEGREE);
+            startAngle = attrsArray.getInt(
+                    R.styleable.ProgressRingView_start_angle,
+                    DEFAULT_START_ANGLE);
             ringWidth = attrsArray.getDimensionPixelSize(
                     R.styleable.ProgressRingView_ring_width,
                     DEFAULT_RING_WIDTH
@@ -243,10 +265,12 @@ public class ProgressRingView extends View {
         }
 
         background = new BackgroundPainter(backgroundColor);
-        emptyRing = new EmptyRingPainter(backgroundProgressColor);
-        progressRing = new ProgressRingPainter(progressColor);
+        emptyRing = new EmptyRingPainter(backgroundProgressColor, startAngle, sweepAngleDegree);
+        progressRing = new ProgressRingPainter(progressColor, startAngle, sweepAngleDegree);
         progressRing.setInnerColor(progressInnerColor);
+        emptyRing.setShouldFill(fillProgress);
         progressRing.setShouldFill(fillProgress);
+        emptyRing.cornerEdges(cornerEdges);
         progressRing.cornerEdges(cornerEdges);
         setProgress(progress);
     }
@@ -302,8 +326,7 @@ public class ProgressRingView extends View {
         background.onSizeChanged(center, ringRadius);
         emptyRing.onSizeChanged(center, ringRadius);
         progressRing.onSizeChanged(center, ringRadius);
-        emptyRing.setRingWidth(ringWidth);
-        progressRing.setRingWidth(ringWidth);
+        setRingWidth(ringWidth);
         invalidate();
     }
 
@@ -346,23 +369,15 @@ public class ProgressRingView extends View {
     }
 
     private static class ProgressRingPainter extends EmptyRingPainter {
-        private final int START_ANGLE = -90;
-
         @FloatRange(from = 0f, to = 1f)
         private float progress;
         @ColorInt
         private int innerColor = color;
 
-        private final RectF rect = new RectF();
-        private Point startCircle = new Point();
-        private Point endCircle = new Point();
         private int sweepAngle;
-        private int ringWidth;
-        private boolean shouldCornerEdges = true;
-        private boolean shouldFill = false;
 
-        ProgressRingPainter(@ColorInt final int color) {
-            super(color);
+        ProgressRingPainter(@ColorInt final int color, int startAngle, int sweepAngleDegree) {
+            super(color, startAngle, sweepAngleDegree);
             initialize();
         }
 
@@ -378,13 +393,13 @@ public class ProgressRingView extends View {
             if (shouldFill) {
                 paint.setColor(innerColor == DEFAULT_PROGRESS_COLOR ? color : innerColor);
                 paint.setStyle(Paint.Style.FILL);
-                canvas.drawArc(rect, START_ANGLE, sweepAngle, true, paint);
+                canvas.drawArc(rect, startAngle, sweepAngle, true, paint);
             }
             paint.setColor(color);
             paint.setStyle(Paint.Style.STROKE);
-            canvas.drawArc(rect, START_ANGLE, sweepAngle, false, paint);
+            canvas.drawArc(rect, startAngle, sweepAngle, false, paint);
             paint.setStyle(Paint.Style.FILL);
-            if (shouldCornerEdges) {
+            if (shouldCornerEdges && sweepAngle > 0) {
                 canvas.drawCircle(startCircle.x, startCircle.y, ringWidth / 2, paint);
                 canvas.drawCircle(endCircle.x, endCircle.y, ringWidth / 2, paint);
             }
@@ -392,14 +407,9 @@ public class ProgressRingView extends View {
 
         void setProgress(@FloatRange(from = 0f, to = 1f) final float progress) {
             this.progress = progress;
-            sweepAngle = (int) (360 * progress);
-            startCircle = calculateStartAngleOvalPoint(START_ANGLE);
-            endCircle = calculateStartAngleOvalPoint(sweepAngle + START_ANGLE);
-        }
-
-        void setRingWidth(@Px final int width) {
-            paint.setStrokeWidth(width);
-            this.ringWidth = width;
+            sweepAngle = (int) (sweepAngleDegree * progress);
+            startCircle = calculateStartAngleOvalPoint(startAngle);
+            endCircle = calculateStartAngleOvalPoint(sweepAngle + startAngle);
         }
 
         @ColorInt
@@ -411,30 +421,6 @@ public class ProgressRingView extends View {
             this.innerColor = innerColor;
         }
 
-        boolean shouldFill() {
-            return shouldFill;
-        }
-
-        void setShouldFill(final boolean shouldFill) {
-            this.shouldFill = shouldFill;
-        }
-
-        boolean shouldCornerEdges() {
-            return shouldCornerEdges;
-        }
-
-        void cornerEdges(final boolean state) {
-            shouldCornerEdges = state;
-        }
-
-        private Point calculateStartAngleOvalPoint(final int angle) {
-            final Point result = new Point();
-            final double radians = Math.toRadians(angle);
-            result.x = (int) (center.x + radius * Math.cos(radians));
-            result.y = (int) (center.y + radius * Math.sin(radians));
-            return result;
-        }
-
         private void initialize() {
             paint.setColor(color);
         }
@@ -443,15 +429,42 @@ public class ProgressRingView extends View {
     private static class EmptyRingPainter extends Painter {
         @ColorInt
         protected int color;
+        int ringWidth;
+        int startAngle;
+        int sweepAngleDegree;
+        RectF rect = new RectF();
+        Point endCircle = new Point();
+        Point startCircle = new Point();
+        boolean shouldFill = false;
+        boolean shouldCornerEdges = true;
 
-        EmptyRingPainter(@ColorInt final int color) {
+        EmptyRingPainter(@ColorInt final int color, int startAngle, int sweepAngleDegree) {
             setColor(color);
+            setStartAngle(startAngle);
+            setSweepAngleDegree(sweepAngleDegree);
             initialize();
         }
 
         @Override
-        void draw(final Canvas canvas) {
-            canvas.drawCircle(center.x, center.y, radius, paint);
+        void onSizeChanged(Point center, int newRadius) {
+            super.onSizeChanged(center, newRadius);
+            rect.set(center.x - radius, center.y - radius, center.x + radius, center.y + radius);
+            calculateStartAngleOvalPoint();
+        }
+
+        @Override
+        void draw(Canvas canvas) {
+            if (shouldFill) {
+                paint.setStyle(Paint.Style.FILL);
+                canvas.drawArc(rect, startAngle, sweepAngleDegree, true, paint);
+            }
+            paint.setStyle(Paint.Style.STROKE);
+            canvas.drawArc(rect, startAngle, sweepAngleDegree, false, paint);
+            paint.setStyle(Paint.Style.FILL);
+            if (shouldCornerEdges) {
+                canvas.drawCircle(startCircle.x, startCircle.y, ringWidth / 2, paint);
+                canvas.drawCircle(endCircle.x, endCircle.y, ringWidth / 2, paint);
+            }
         }
 
         void setColor(@ColorInt final int color) {
@@ -466,11 +479,57 @@ public class ProgressRingView extends View {
 
         void setRingWidth(@Px final int width) {
             paint.setStrokeWidth(width);
+            this.ringWidth = width;
+        }
+
+        public int getStartAngle() {
+            return startAngle;
+        }
+
+        void setStartAngle(int startAngle) {
+            this.startAngle = startAngle;
+        }
+
+        public int getSweepAngleDegree() {
+            return sweepAngleDegree;
+        }
+
+        void setSweepAngleDegree(int sweepAngleDegree) {
+            this.sweepAngleDegree = sweepAngleDegree;
+        }
+
+        boolean shouldCornerEdges() {
+            return shouldCornerEdges;
+        }
+
+        void cornerEdges(boolean state) {
+            shouldCornerEdges = state;
+        }
+
+        boolean shouldFill() {
+            return shouldFill;
+        }
+
+        void setShouldFill(boolean shouldFill) {
+            this.shouldFill = shouldFill;
         }
 
         private void initialize() {
             paint.setStyle(Paint.Style.STROKE);
             paint.setColor(color);
+        }
+
+        private void calculateStartAngleOvalPoint() {
+            startCircle = calculateStartAngleOvalPoint(startAngle);
+            endCircle = calculateStartAngleOvalPoint(sweepAngleDegree + startAngle);
+        }
+
+        Point calculateStartAngleOvalPoint(int angle) {
+            Point result = new Point();
+            double radians = Math.toRadians(angle);
+            result.x = (int) (center.x + radius * Math.cos(radians));
+            result.y = (int) (center.y + radius * Math.sin(radians));
+            return result;
         }
     }
 
@@ -522,6 +581,13 @@ public class ProgressRingView extends View {
         }
 
         abstract void draw(Canvas canvas);
+    }
+
+    public static abstract class AnimationUpdateListener {
+
+        public void onAnimationProgress(float progress) {
+            // Do nothing
+        }
     }
 
     private static class SavedState extends BaseSavedState {
