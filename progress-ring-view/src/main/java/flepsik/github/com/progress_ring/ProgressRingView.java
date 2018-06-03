@@ -45,7 +45,7 @@ public class ProgressRingView extends View {
     private float progress;
     @Px
     private int ringWidth = DEFAULT_RING_WIDTH;
-    private boolean animated = false;
+    private boolean animated;
     private int animationDuration = DEFAULT_ANIMATION_DURATION;
 
     private ValueAnimator progressAnimator;
@@ -407,10 +407,12 @@ public class ProgressRingView extends View {
                 paint.setStyle(Paint.Style.FILL);
                 canvas.drawArc(rect, startAngle, sweepAngle, true, paint);
             }
+
             paint.setColor(color);
             paint.setStyle(Paint.Style.STROKE);
             canvas.drawArc(rect, startAngle, sweepAngle, false, paint);
             paint.setStyle(Paint.Style.FILL);
+
             if (shouldCornerEdges && sweepAngle > 0) {
                 canvas.drawCircle(startCircle.x, startCircle.y, ringWidth / 2, paint);
                 canvas.drawCircle(endCircle.x, endCircle.y, ringWidth / 2, paint);
@@ -470,9 +472,11 @@ public class ProgressRingView extends View {
                 paint.setStyle(Paint.Style.FILL);
                 canvas.drawArc(rect, startAngle, sweepAngleDegree, true, paint);
             }
+
             paint.setStyle(Paint.Style.STROKE);
             canvas.drawArc(rect, startAngle, sweepAngleDegree, false, paint);
             paint.setStyle(Paint.Style.FILL);
+
             if (shouldCornerEdges) {
                 canvas.drawCircle(startCircle.x, startCircle.y, ringWidth / 2, paint);
                 canvas.drawCircle(endCircle.x, endCircle.y, ringWidth / 2, paint);
@@ -595,16 +599,12 @@ public class ProgressRingView extends View {
         abstract void draw(Canvas canvas);
     }
 
-    public abstract static class AnimationUpdateListener {
-
-        public void onAnimationProgress(float progress) {
-            // Do nothing
-        }
+    public interface AnimationUpdateListener {
+        void onAnimationProgress(final float progress);
     }
 
     private static class SavedState extends BaseSavedState {
         float progress;
-
 
         SavedState(final Parcelable superState) {
             super(superState);
