@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ProgressRingView.iml" filepath="$PROJECT_DIR$/ProgressRingView.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ProgressRingView.iml" filepath="$PROJECT_DIR$/ProgressRingView.iml" />
       <module fileurl="file://$PROJECT_DIR$/progress-ring-view/progress-ring-view.iml" filepath="$PROJECT_DIR$/progress-ring-view/progress-ring-view.iml" />
       <module fileurl="file://$PROJECT_DIR$/sample/sample.iml" filepath="$PROJECT_DIR$/sample/sample.iml" />
     </modules>

@@ -1,6 +1,11 @@
 apply plugin: 'com.android.library'
 
 ext {
+//    To upload something I need to fill
+//    bintray.user=USERNAME
+//    bintray.apikey=API_KEY
+//    bintray.gpg.password=GPG_PASSWORD
+//    into local.properties files
     bintrayRepo = 'maven'
     bintrayName = 'progress-ring-view'
 
@@ -13,7 +18,7 @@ ext {
     siteUrl = 'https://github.com/Flepsik/ProgressRingView'
     gitUrl = 'https://github.com/Flepsik/ProgressRingView.git'
 
-    libraryVersion = '1.2.0'
+    libraryVersion = '1.2.1'
 
     developerId = 'fleps'
     developerName = 'Bogdanov Philipp'
@@ -31,8 +36,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.2.0"
+        versionCode 10
+        versionName "1.2.1"
     }
     buildTypes {
         release {
