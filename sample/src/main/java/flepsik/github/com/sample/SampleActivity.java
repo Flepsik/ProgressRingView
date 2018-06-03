@@ -11,11 +11,11 @@ import flepsik.github.com.progress_ring.ProgressRingView;
 
 public class SampleActivity extends AppCompatActivity {
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample);
 
-        ProgressRingView progress = (ProgressRingView) findViewById(R.id.first);
+        final ProgressRingView progress = (ProgressRingView) findViewById(R.id.first);
         progress.cornerEdges(false);
         progress.setProgress(.3f);
         progress.setAnimated(false);
@@ -37,8 +37,8 @@ public class SampleActivity extends AppCompatActivity {
     }
 
     private float lastProgress = 0f;
-    private void changeProgress(ProgressRingView progressRingView) {
-        float targetProgress = lastProgress == 1f ? 0f : 1f;
+    private void changeProgress(final ProgressRingView progressRingView) {
+        final float targetProgress = lastProgress == 1f ? 0f : 1f;
         lastProgress = targetProgress;
         progressRingView.setProgress(targetProgress);
     }

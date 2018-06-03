@@ -48,28 +48,28 @@ public class ProgressRingView extends View {
     private EmptyRingPainter emptyRing;
     private ProgressRingPainter progressRing;
 
-    public ProgressRingView(Context context) {
+    public ProgressRingView(final Context context) {
         super(context);
         initialize(context, null);
     }
 
-    public ProgressRingView(Context context, @Nullable AttributeSet attrs) {
+    public ProgressRingView(final Context context, @Nullable final AttributeSet attrs) {
         super(context, attrs);
         initialize(context, attrs);
     }
 
-    public ProgressRingView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public ProgressRingView(final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initialize(context, attrs);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public ProgressRingView(Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public ProgressRingView(final Context context, @Nullable final AttributeSet attrs, final int defStyleAttr, final int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initialize(context, attrs);
     }
 
-    public void cornerEdges(boolean state) {
+    public void cornerEdges(final boolean state) {
         if (progressRing.shouldCornerEdges() != state) {
             progressRing.cornerEdges(state);
             invalidate();
@@ -84,7 +84,7 @@ public class ProgressRingView extends View {
         return animated;
     }
 
-    public void setAnimated(boolean animated) {
+    public void setAnimated(final boolean animated) {
         this.animated = animated;
     }
 
@@ -92,11 +92,11 @@ public class ProgressRingView extends View {
         return animationDuration;
     }
 
-    public void setAnimationDuration(int animationDuration) {
+    public void setAnimationDuration(final int animationDuration) {
         this.animationDuration = animationDuration;
     }
 
-    public void fillProgress(boolean state) {
+    public void fillProgress(final boolean state) {
         if (progressRing.shouldFill() != state) {
             progressRing.setShouldFill(state);
             invalidate();
@@ -107,7 +107,7 @@ public class ProgressRingView extends View {
         return progressRing.shouldFill();
     }
 
-    public void setProgressFillColor(@ColorInt int color) {
+    public void setProgressFillColor(@ColorInt final int color) {
         if (progressRing.getColor() != color) {
             progressRing.setInnerColor(color);
             invalidate();
@@ -119,7 +119,7 @@ public class ProgressRingView extends View {
         return progressRing.getInnerColor();
     }
 
-    public void setProgress(@FloatRange(from = 0f, to = 1f) float newProgress) {
+    public void setProgress(@FloatRange(from = 0f, to = 1f) final float newProgress) {
         if (this.progress != newProgress) {
             if (animated) {
                 if (progressAnimator != null) {
@@ -149,7 +149,7 @@ public class ProgressRingView extends View {
         return progress;
     }
 
-    public void setBackgroundProgressColor(@ColorInt int color) {
+    public void setBackgroundProgressColor(@ColorInt final int color) {
         emptyRing.setColor(color);
         invalidate();
     }
@@ -159,7 +159,7 @@ public class ProgressRingView extends View {
         return emptyRing.color;
     }
 
-    public void setProgressColor(@ColorInt int color) {
+    public void setProgressColor(@ColorInt final int color) {
         if (progressRing.getColor() != color) {
             progressRing.setColor(color);
             invalidate();
@@ -171,7 +171,7 @@ public class ProgressRingView extends View {
         return progressRing.color;
     }
 
-    public void setBackgroundColor(@ColorInt int color) {
+    public void setBackgroundColor(@ColorInt final int color) {
         if (background.getColor() != color) {
             background.setColor(color);
             invalidate();
@@ -183,7 +183,7 @@ public class ProgressRingView extends View {
         return background.getColor();
     }
 
-    public void setRingWidth(@Px int ringWidth) {
+    public void setRingWidth(@Px final int ringWidth) {
         this.ringWidth = ringWidth;
         emptyRing.setRingWidth(ringWidth);
         progressRing.setRingWidth(ringWidth);
@@ -194,7 +194,7 @@ public class ProgressRingView extends View {
         return ringWidth;
     }
 
-    protected void initialize(Context context, @Nullable AttributeSet attributeSet) {
+    protected void initialize(final Context context, @Nullable final AttributeSet attributeSet) {
         int backgroundColor = DEFAULT_BACKGROUND_COLOR;
         int backgroundProgressColor = DEFAULT_BACKGROUND_PROGRESS_COLOR;
         int progressColor = DEFAULT_PROGRESS_COLOR;
@@ -204,7 +204,7 @@ public class ProgressRingView extends View {
         float progress = 0f;
 
         if (attributeSet != null) {
-            TypedArray attrsArray = context.obtainStyledAttributes(attributeSet, R.styleable.ProgressRingView);
+            final TypedArray attrsArray = context.obtainStyledAttributes(attributeSet, R.styleable.ProgressRingView);
             progress = attrsArray.getFloat(R.styleable.ProgressRingView_progress, .0f);
             ringWidth = attrsArray.getDimensionPixelSize(
                     R.styleable.ProgressRingView_ring_width,
@@ -252,16 +252,16 @@ public class ProgressRingView extends View {
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int size = convertDpToPixel(DEFAULT_SIZE_DP, getContext());
+    protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
+        final int size = convertDpToPixel(DEFAULT_SIZE_DP, getContext());
 
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+        final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+        final int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        final int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
-        int width;
-        int height;
+        final int width;
+        final int height;
 
         if (widthMode == MeasureSpec.EXACTLY) {
             width = widthSize;
@@ -283,15 +283,15 @@ public class ProgressRingView extends View {
     }
 
     @Override
-    protected void onSizeChanged(int width, int height, int oldWidth, int oldHeight) {
+    protected void onSizeChanged(final int width, final int height, final int oldWidth, final int oldHeight) {
         super.onSizeChanged(width, height, oldWidth, oldHeight);
 
-        Point center = new Point(width / 2, height / 2);
-        int smallestSide = Math.min(width, height);
-        int radius = smallestSide / 2;
+        final Point center = new Point(width / 2, height / 2);
+        final int smallestSide = Math.min(width, height);
+        final int radius = smallestSide / 2;
 
-        int ringRadius;
-        int ringWidth;
+        final int ringRadius;
+        final int ringWidth;
         if (this.ringWidth != DEFAULT_RING_WIDTH) {
             ringRadius = radius - this.ringWidth;
             ringWidth = this.ringWidth;
@@ -308,7 +308,7 @@ public class ProgressRingView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(final Canvas canvas) {
         super.onDraw(canvas);
 
         background.draw(canvas);
@@ -318,8 +318,8 @@ public class ProgressRingView extends View {
 
     @Override
     protected Parcelable onSaveInstanceState() {
-        Parcelable superState = super.onSaveInstanceState();
-        SavedState savedState = new SavedState(superState);
+        final Parcelable superState = super.onSaveInstanceState();
+        final SavedState savedState = new SavedState(superState);
         savedState.animationDuration = animationDuration;
         savedState.animated = animated;
         savedState.progress = progress;
@@ -327,13 +327,13 @@ public class ProgressRingView extends View {
         return savedState;
     }
 
-    protected void onRestoreInstanceState(Parcelable state) {
+    protected void onRestoreInstanceState(final Parcelable state) {
         if (!(state instanceof SavedState)) {
             super.onRestoreInstanceState(state);
             return;
         }
 
-        SavedState savedState = (SavedState) state;
+        final SavedState savedState = (SavedState) state;
         super.onRestoreInstanceState(savedState.getSuperState());
         animationDuration = savedState.animationDuration;
         animated = savedState.animated;
@@ -341,7 +341,7 @@ public class ProgressRingView extends View {
         setRingWidth(savedState.ringWidth);
     }
 
-    private static int convertDpToPixel(float dp, Context context) {
+    private static int convertDpToPixel(final float dp, final Context context) {
         return Math.round(context.getResources().getDisplayMetrics().density * dp);
     }
 
@@ -353,7 +353,7 @@ public class ProgressRingView extends View {
         @ColorInt
         private int innerColor = color;
 
-        private RectF rect = new RectF();
+        private final RectF rect = new RectF();
         private Point startCircle = new Point();
         private Point endCircle = new Point();
         private int sweepAngle;
@@ -367,14 +367,14 @@ public class ProgressRingView extends View {
         }
 
         @Override
-        void onSizeChanged(Point center, int newRadius) {
+        void onSizeChanged(final Point center, final int newRadius) {
             super.onSizeChanged(center, newRadius);
             rect.set(center.x - radius, center.y - radius, center.x + radius, center.y + radius);
             setProgress(progress);
         }
 
         @Override
-        void draw(Canvas canvas) {
+        void draw(final Canvas canvas) {
             if (shouldFill) {
                 paint.setColor(innerColor == DEFAULT_PROGRESS_COLOR ? color : innerColor);
                 paint.setStyle(Paint.Style.FILL);
@@ -390,14 +390,14 @@ public class ProgressRingView extends View {
             }
         }
 
-        void setProgress(@FloatRange(from = 0f, to = 1f) float progress) {
+        void setProgress(@FloatRange(from = 0f, to = 1f) final float progress) {
             this.progress = progress;
             sweepAngle = (int) (360 * progress);
             startCircle = calculateStartAngleOvalPoint(START_ANGLE);
             endCircle = calculateStartAngleOvalPoint(sweepAngle + START_ANGLE);
         }
 
-        void setRingWidth(@Px int width) {
+        void setRingWidth(@Px final int width) {
             paint.setStrokeWidth(width);
             this.ringWidth = width;
         }
@@ -407,7 +407,7 @@ public class ProgressRingView extends View {
             return innerColor;
         }
 
-        void setInnerColor(@ColorInt int innerColor) {
+        void setInnerColor(@ColorInt final int innerColor) {
             this.innerColor = innerColor;
         }
 
@@ -415,7 +415,7 @@ public class ProgressRingView extends View {
             return shouldFill;
         }
 
-        void setShouldFill(boolean shouldFill) {
+        void setShouldFill(final boolean shouldFill) {
             this.shouldFill = shouldFill;
         }
 
@@ -423,13 +423,13 @@ public class ProgressRingView extends View {
             return shouldCornerEdges;
         }
 
-        void cornerEdges(boolean state) {
+        void cornerEdges(final boolean state) {
             shouldCornerEdges = state;
         }
 
-        private Point calculateStartAngleOvalPoint(int angle) {
-            Point result = new Point();
-            double radians = Math.toRadians(angle);
+        private Point calculateStartAngleOvalPoint(final int angle) {
+            final Point result = new Point();
+            final double radians = Math.toRadians(angle);
             result.x = (int) (center.x + radius * Math.cos(radians));
             result.y = (int) (center.y + radius * Math.sin(radians));
             return result;
@@ -450,11 +450,11 @@ public class ProgressRingView extends View {
         }
 
         @Override
-        void draw(Canvas canvas) {
+        void draw(final Canvas canvas) {
             canvas.drawCircle(center.x, center.y, radius, paint);
         }
 
-        void setColor(@ColorInt int color) {
+        void setColor(@ColorInt final int color) {
             this.color = color;
             paint.setColor(color);
         }
@@ -464,7 +464,7 @@ public class ProgressRingView extends View {
             return color;
         }
 
-        void setRingWidth(@Px int width) {
+        void setRingWidth(@Px final int width) {
             paint.setStrokeWidth(width);
         }
 
@@ -478,7 +478,7 @@ public class ProgressRingView extends View {
         @ColorInt
         protected int color;
 
-        BackgroundPainter(@ColorInt int color) {
+        BackgroundPainter(@ColorInt final int color) {
             this.color = color;
             initialize();
         }
@@ -487,13 +487,13 @@ public class ProgressRingView extends View {
             return color;
         }
 
-        void setColor(int color) {
+        void setColor(final int color) {
             this.color = color;
             paint.setColor(color);
         }
 
         @Override
-        void draw(Canvas canvas) {
+        void draw(final Canvas canvas) {
             if (color != DEFAULT_BACKGROUND_COLOR) {
                 canvas.drawCircle(center.x, center.y, radius, paint);
             }
@@ -504,7 +504,7 @@ public class ProgressRingView extends View {
         }
     }
 
-    private static abstract class Painter {
+    private abstract static class Painter {
         Point center = new Point();
         int radius;
 
@@ -516,7 +516,7 @@ public class ProgressRingView extends View {
         }
 
         @CallSuper
-        void onSizeChanged(Point center, int newRadius) {
+        void onSizeChanged(final Point center, final int newRadius) {
             this.center = center;
             this.radius = newRadius;
         }
@@ -530,11 +530,11 @@ public class ProgressRingView extends View {
         boolean animated;
         int animationDuration;
 
-        SavedState(Parcelable superState) {
+        SavedState(final Parcelable superState) {
             super(superState);
         }
 
-        private SavedState(Parcel in) {
+        private SavedState(final Parcel in) {
             super(in);
             this.progress = in.readFloat();
             this.ringWidth = in.readInt();
@@ -543,7 +543,7 @@ public class ProgressRingView extends View {
         }
 
         @Override
-        public void writeToParcel(Parcel out, int flags) {
+        public void writeToParcel(final Parcel out, final int flags) {
             super.writeToParcel(out, flags);
             out.writeFloat(this.progress);
             out.writeInt(this.ringWidth);
@@ -553,11 +553,11 @@ public class ProgressRingView extends View {
 
         public static final Parcelable.Creator<SavedState> CREATOR
                 = new Parcelable.Creator<SavedState>() {
-            public SavedState createFromParcel(Parcel in) {
+            public SavedState createFromParcel(final Parcel in) {
                 return new SavedState(in);
             }
 
-            public SavedState[] newArray(int size) {
+            public SavedState[] newArray(final int size) {
                 return new SavedState[size];
             }
         };
